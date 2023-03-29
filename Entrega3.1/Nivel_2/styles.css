@@ -1,0 +1,47 @@
+/* Estilos para la lista ordenada */
+ol {
+  counter-reset: my-counter; /* Reinicia el contador en 0 */
+  list-style: none; /* Oculta los números de la lista */
+  padding: 0;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* Estilos para los elementos de la lista */
+li {
+  position: relative;
+  padding-left: 2.5rem; /* Agrega espacio para el ícono del marcador */
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+/* Estilos para el ícono del marcador */
+li::before {
+  content: counter(my-counter); /* Usa el contador como el número del ícono */
+  counter-increment: my-counter; /* Incrementa el contador en 1 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1rem;
+  height: 1rem;
+  line-height: 1rem;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  background-color: #9900ff;
+  border-radius: 50%;
+  transform: translate(-50%, 50%);
+}
+div {
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  align-items: center;
+  padding: 2rem;
+  background-color: rgba(38, 0, 255, 0.26);
+  width:fit-content
+}
+
+h1 {
+  margin-top: 1rem;
+}
