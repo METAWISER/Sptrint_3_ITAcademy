@@ -1,25 +1,45 @@
 const EventEmitter = require("events");
 
-class Topic extends EventEmitter {
-  constructor(name) {
-    super();
-    this.name = name;
-    this.users = [];
-    this.on("newMessage", () => {
+class Observer extends EventEmitter {
+  constructor(eventName){
+    super()
+    this.eventName = eventName
+    this.on(eventName, (user, message) => {
       console.log(`
 =======================================
-       Alerta Nuevo Mensaje
+      Alerta Nuevo Mensaje
 =======================================
       `);
-    });
+      console.log(`[${new Date().toLocaleString()}]-> ${user}: ${message}`);
+    }); 
+  }
+
+  subscribe(user){
+    this.on(this.eventName, () => {user.notify();});
+  }
+  
+  newMessageEmitter(user, message){
+   
+    this.emit(
+      this.eventName,
+      user.name,
+      message 
+    );
+  }
+
+}
+
+class Topic  {
+  constructor(name, observer) {
+    this.observer = observer
+    this.name = name;
+    this.users = [];
+    
   }
 
   subscribe(u) {
     this.users.push(u);
-    this.on("newMessage", (date, user, message) => {
-      console.log(`[${date.toLocaleString()}]-> ${user}: ${message}`);
-      u.notify();
-    });
+    this.observer.subscribe(u)
   }
 
   unsubscribe(user) {
@@ -27,16 +47,14 @@ class Topic extends EventEmitter {
   }
 
   newMessage(user, message) {
-    try {
-      this.emit(
-        "newMessage",
-        new Date(),
-        this.users.find((u) => u === user)?.name,
-        message
-      );
+     try {
+      const userExist = this.users.find(u => u === user)
+      if (!userExist ) throw new Error('user not subscribed')
+      this.users.filter(u => u != user)
+      this.observer.newMessageEmitter(user, message)
     } catch (error) {
       console.log(error);
-    }
+    } 
   }
 }
 
@@ -49,7 +67,11 @@ class User {
   }
 }
 
-const topic = new Topic("Math");
+
+
+const observer = new Observer('newMessage')
+
+const topic = new Topic("Math", observer);
 
 const user1 = new User("Carlos");
 const user2 = new User("Danny");
@@ -62,4 +84,7 @@ topic.subscribe(user3);
 topic.newMessage(user3, "hola");
 topic.newMessage(user2, "mundo");
 topic.newMessage(user1, "mates");
-user1.notify();
+
+
+
+ 
