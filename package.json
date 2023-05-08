@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "e2n2": "ts-node ./Entrega3.2/Nivel_2/app.ts"
+    "e2n2": "ts-node ./Entrega3.2/Nivel_2/app.ts",
+    "e2n1": "ts-node ./Entrega3.2/Nivel_1/App.ts"
   },
   "repository": {
     "type": "git",
